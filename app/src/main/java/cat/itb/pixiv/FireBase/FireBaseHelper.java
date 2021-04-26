@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -160,7 +161,7 @@ public class FireBaseHelper {
 
                             userExists[0] = true;
                             if(user.getPassword().equals(password)){
-                                keyU = user.getKey();
+                                keyU = user.getUsername();
                                 userExists[1] = true;
                             }
                         }
@@ -177,9 +178,8 @@ public class FireBaseHelper {
 
 
     public static void subirNuevoUser(String userName, String password){
-        String key = referenceUsers.push().getKey();
-        keyU = key;
-        referenceUsers.child(key).setValue(new User(userName, password,key, defaultUserImage));
+        keyU = userName;
+        referenceUsers.child(userName).setValue(new User(userName, password,"key", defaultUserImage));
     }
 
     public static void subirImagenPerfil(String url){
@@ -251,7 +251,7 @@ public class FireBaseHelper {
         novel.setKey(keyI);
         ref.child(keyI).setValue(novel);
 
-        ref = referenceMangaRecommended.getRef();
+        ref = referenceNovelsRecommended.getRef();
         novel.setKey(keyI);
         ref.child(keyI).setValue(novel);
     }
@@ -288,18 +288,19 @@ public class FireBaseHelper {
     public static void subirUserFollow(User user){
         //poner que sigues a esa persona
         DatabaseReference ref = following.getRef();
-        ref.child(user.getKey()).setValue(user);
-        //
+        ref.child(user).setValue(user);
+
+
         //poner a la persona que le sigue alguien
-         ref = followers.getRef();
+         referenceUsers.child(user).child("Followers").getRef();
          ref.child(thisUser.getKey()).setValue(thisUser);
          //
     }
 
-    public static void eliminarUserFollow(User user){
-        following.child(user.getKey()).removeValue();
+    public static void eliminarUserFollow(String user){
+        following.child(user).removeValue();
 
-        DatabaseReference ref = followers.getRef();
+        DatabaseReference ref = referenceUsers.child(user).child("Followers").getRef();
         ref.child(thisUser.getKey()).removeValue();
 
     }
@@ -307,7 +308,7 @@ public class FireBaseHelper {
 
 
 
-    public static String buscarImagenPerfil(){
+    public static String buscarImagenPerfil(String name){
         final String[] urlIU = new String[1];
         referenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -315,7 +316,7 @@ public class FireBaseHelper {
                 for(final DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
                     assert user != null;
-                    if(user.getKey().equals(keyU)){
+                    if(user.getUsername().equals(name)){
                         urlIU[0] = user.getImatgePerfil();
                     }
                 }
@@ -326,9 +327,11 @@ public class FireBaseHelper {
         return urlIU[0];
     }
 
-    public static String[] buscar3Imagenes(){
+    public static String[] buscar3Imagenes(String name){
         final String[] tresImagenes = new String[3];
-        userMyWorksIllustrations.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference ref = referenceUsers.child(name).child("MyWorks").child("Illustration");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(final DataSnapshot snapshot : dataSnapshot.getChildren()){

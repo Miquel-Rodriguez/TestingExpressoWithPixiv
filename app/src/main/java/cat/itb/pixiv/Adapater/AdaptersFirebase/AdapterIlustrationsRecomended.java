@@ -1,6 +1,7 @@
 package cat.itb.pixiv.Adapater.AdaptersFirebase;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -16,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import cat.itb.pixiv.ClassesModels.IllustrationClass;
 import cat.itb.pixiv.ClassesModels.ImatgesP;
+import cat.itb.pixiv.Fragments.LoginFragments.FragmentLogin;
 import cat.itb.pixiv.Fragments.onClickImage.FragmentOCIllustrations;
 import cat.itb.pixiv.R;
 
@@ -37,17 +41,10 @@ public class AdapterIlustrationsRecomended extends FirebaseRecyclerAdapter<Illus
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull AdapterIlustrationsRecomended.ViewHolderIllustrationsRecommended holder, int position, @NonNull IllustrationClass model) {
+    protected void onBindViewHolder(@NonNull AdapterIlustrationsRecomended.ViewHolderIllustrationsRecommended holder, int position, @NonNull final IllustrationClass model) {
         this.model = model;
-        holder.bind();
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppCompatActivity context=(AppCompatActivity)v.getContext();
-                FragmentOCIllustrations fragmentOCIllustrations=new FragmentOCIllustrations();
-                context.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragmentOCIllustrations).commit();
-            }
-        });
+        holder.bind(model);
+
 
     }
 
@@ -69,9 +66,10 @@ public class AdapterIlustrationsRecomended extends FirebaseRecyclerAdapter<Illus
 
 
 
+
         }
 
-        public void bind(){
+        public void bind(final IllustrationClass ilus){
             Picasso.with(getContext()).load(model.getIllustrationImgUrl()).into(imageViewimage);
 
             final boolean[] heart = {false};
@@ -82,6 +80,20 @@ public class AdapterIlustrationsRecomended extends FirebaseRecyclerAdapter<Illus
                         imageViewLike.setImageResource(R.drawable.likeheartwhite);
                     }else imageViewLike.setImageResource(R.drawable.likeheartred);
                     heart[0] = !heart[0];
+                }
+            });
+
+            imageViewimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(ilus!=null){
+                        Bundle argument=new Bundle();
+                        argument.putParcelable("illustrationRecommended",ilus);
+                        AppCompatActivity context=(AppCompatActivity)v.getContext();
+                        FragmentOCIllustrations fragmentOCIllustrations=new FragmentOCIllustrations();
+                        fragmentOCIllustrations.setArguments(argument);
+                        context.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragmentOCIllustrations).commit();
+                    }
                 }
             });
 

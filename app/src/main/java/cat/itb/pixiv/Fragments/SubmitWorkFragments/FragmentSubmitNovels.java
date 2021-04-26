@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import cat.itb.pixiv.ClassesModels.NovelClass;
 import cat.itb.pixiv.FireBase.FireBaseHelper;
-import cat.itb.pixiv.Fragments.HomeFragments.HomeFragment;
+import cat.itb.pixiv.Fragments.HomeFragment;
 import cat.itb.pixiv.R;
 
 public class FragmentSubmitNovels extends Fragment {
@@ -37,7 +37,7 @@ public class FragmentSubmitNovels extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.submit_work_novels, container, false);
 
-        submit = v.findViewById(R.id.submitIllustrationManga);
+        submit = v.findViewById(R.id.submitNovels);
         toolbar = v.findViewById(R.id.toolbar_subitwork_novels);
         title = v.findViewById(R.id.edit_text_title_submit_novel);
         description = v.findViewById(R.id.edit_text_description_submit_novel);
@@ -62,7 +62,7 @@ public class FragmentSubmitNovels extends Fragment {
             @Override
             public void onClick(View v) {
 
-                fireBaseHelper.subirMyWork(new NovelClass( 1, title.getText().toString(), description.getText().toString(), content.getText().toString(), "Miquel",  FireBaseHelper.getUrlImage(), FireBaseHelper.getDefaultUserImage()));
+                fireBaseHelper.subirMyWork(new NovelClass( 1, title.getText().toString(), description.getText().toString(), content.getText().toString(), FireBaseHelper.getThisUser().getUsername(),  FireBaseHelper.getUrlImage(), FireBaseHelper.getDefaultUserImage()));
 
                 FragmentManager manager = getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();

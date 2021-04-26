@@ -79,6 +79,11 @@
             android:title="Log Out"
             />
 
+        <item
+            android:id="@+id/changeImg"
+            android:title="Change the profile pic"
+            />
+
 
     </group>
         </menu>

@@ -19,6 +19,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/backManga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_arrow_back" />
+
             <ImageView
                 android:id="@+id/manga_oc_Image"
                 android:layout_width="match_parent"
@@ -27,7 +37,7 @@
                 android:scaleType="fitStart"
                 android:src="@drawable/img10" />
 
-
+            </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,6 +78,16 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/followButtonManga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Follow"
+                    android:layout_marginLeft="75dp"
+                    android:textColor="@color/colorPrimary"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    />
+
 
             </LinearLayout>
 
@@ -86,7 +106,10 @@
                 android:textSize="16sp"
                 />
 
+
+
         </LinearLayout>
+
 
 
         </LinearLayout>

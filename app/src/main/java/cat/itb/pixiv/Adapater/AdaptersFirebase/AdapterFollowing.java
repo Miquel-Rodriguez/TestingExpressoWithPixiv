@@ -62,6 +62,7 @@ public class AdapterFollowing extends FirebaseRecyclerAdapter<User, AdapterFollo
         }
 
         public void bind(){
+            System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
             Picasso.with(getContext()).load(model.getImatgePerfil()).into(imageViewFollowers);
             textViewUsername.setText(model.getUsername());
             followButton = itemView.findViewById(R.id.followButtonFollowing);

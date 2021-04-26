@@ -1,6 +1,7 @@
 package cat.itb.pixiv.Adapater.AdaptersFirebase;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -16,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import cat.itb.pixiv.ClassesModels.ImatgesP;
 import cat.itb.pixiv.ClassesModels.MangaClass;
+import cat.itb.pixiv.Fragments.onClickImage.FragmentOCIllustrations;
+import cat.itb.pixiv.Fragments.onClickImage.FragmentOCManga;
 import cat.itb.pixiv.R;
 
 public class AdapterMangaRecommended extends FirebaseRecyclerAdapter<MangaClass, AdapterMangaRecommended.ViewHolderMangaRecommended> {
@@ -37,7 +41,7 @@ public class AdapterMangaRecommended extends FirebaseRecyclerAdapter<MangaClass,
     @Override
     protected void onBindViewHolder(@NonNull AdapterMangaRecommended.ViewHolderMangaRecommended holder, int position, @NonNull MangaClass model) {
         this.model = model;
-        holder.bind();
+        holder.bind(model);
     }
 
     @NonNull
@@ -62,7 +66,7 @@ public class AdapterMangaRecommended extends FirebaseRecyclerAdapter<MangaClass,
 
         }
 
-        public void bind(){
+        public void bind(final MangaClass manga){
             Picasso.with(getContext()).load(model.getMangaImgUrl()).into(imageViewimage);
             final boolean[] heart = {false};
             imageViewlike.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,21 @@ public class AdapterMangaRecommended extends FirebaseRecyclerAdapter<MangaClass,
             textViewTitle.setText(model.getTitle());
             textViewDescription.setText(model.getDescription());
             textViewNumlikes.setText(Integer.toString(model.getLikesNumber()));
+
+            imageViewimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(manga!=null){
+                        Bundle argument=new Bundle();
+                        argument.putParcelable("mangaRecomended",manga);
+                        AppCompatActivity context=(AppCompatActivity)v.getContext();
+                        FragmentOCManga fragmentOCManga=new FragmentOCManga();
+                        fragmentOCManga.setArguments(argument);
+                        context.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragmentOCManga).commit();
+                    }
+                }
+            });
+
         }
     }
 }

@@ -2,6 +2,7 @@ package cat.itb.pixiv.Fragments.SubmitWorkFragments;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,7 +28,7 @@ import java.io.File;
 
 import cat.itb.pixiv.ClassesModels.MangaClass;
 import cat.itb.pixiv.FireBase.FireBaseHelper;
-import cat.itb.pixiv.Fragments.HomeFragments.HomeFragment;
+import cat.itb.pixiv.Fragments.HomeFragment;
 import cat.itb.pixiv.R;
 
 public class FragmentSubmitManga extends Fragment {
@@ -93,7 +95,7 @@ public class FragmentSubmitManga extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FireBaseHelper.subirMyWork(new MangaClass( title.getText().toString(), description.getText().toString(), "Miquel",  FireBaseHelper.getUrlImage(), FireBaseHelper.getDefaultUserImage()));
+                FireBaseHelper.subirMyWork(new MangaClass( title.getText().toString(), description.getText().toString(), FireBaseHelper.getThisUser().getUsername(),  FireBaseHelper.getUrlImage(), FireBaseHelper.getDefaultUserImage()));
 
                 FragmentManager manager = getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -116,6 +118,7 @@ public class FragmentSubmitManga extends Fragment {
         return v;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -130,6 +133,8 @@ public class FragmentSubmitManga extends Fragment {
             Uri resultUri = result.getUri();
             url = new File(resultUri.getPath());
             Picasso.with(getContext()).load(url).into(imgRef);
+            FireBaseHelper.comprimirImatge(getContext(),url);
+
 
         }
         if(requestCode == REQUEST_IMAGE_CAPTURE){

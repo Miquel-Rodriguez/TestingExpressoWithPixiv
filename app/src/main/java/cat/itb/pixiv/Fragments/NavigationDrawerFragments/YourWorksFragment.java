@@ -66,6 +66,20 @@ public class YourWorksFragment extends Fragment {
 
         System.out.println(FireBaseHelper.getUserMyWorksIllustrations());
 
+        FirebaseRecyclerOptions<MangaClass> optionss = new FirebaseRecyclerOptions.Builder<MangaClass>()
+                .setQuery(FireBaseHelper.getUserMyWorksManga(), MangaClass.class).build();
+        adapterYourWorksManga = new AdapterYourWorksManga(optionss);
+        adapterYourWorksManga.setContext(getContext());
+        recyclerView.setAdapter(adapterYourWorksManga);
+
+        FirebaseRecyclerOptions<NovelClass> optionsss = new FirebaseRecyclerOptions.Builder<NovelClass>()
+                .setQuery(FireBaseHelper.getUserMyWorksNovels()
+                        , NovelClass.class).build();
+        adapterYourWorksNovels = new AdapterYourWorksNovels(optionsss);
+        adapterYourWorksNovels.setContext(getContext());
+        recyclerView.setAdapter(adapterYourWorksNovels);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         FirebaseRecyclerOptions<IllustrationClass> options = new FirebaseRecyclerOptions.Builder<IllustrationClass>()
                 .setQuery(FireBaseHelper.getReferenceIllustrationsRecommended(), IllustrationClass.class).build();
@@ -77,39 +91,36 @@ public class YourWorksFragment extends Fragment {
 
         submitWorkSegunRecycler =1;
 
-        System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee22222222222222222222222222222222222222222");
 
-        tabs.setOnClickListener(new View.OnClickListener() {
+
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                int numbut = tabs.getSelectedTabPosition();
-                if(numbut==1){
+            public void onTabSelected(TabLayout.Tab tab) {
+                int numbut = tab.getPosition();
+                System.out.println(numbut +"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+                if(numbut==0){
 
-                    FirebaseRecyclerOptions<IllustrationClass> options = new FirebaseRecyclerOptions.Builder<IllustrationClass>()
-                            .setQuery(FireBaseHelper.getUserMyWorksIllustrations(), IllustrationClass.class).build();
-                    adapterYourWorksIllustrations = new AdapterYourWorksIllustrations(options);
-                    adapterYourWorksIllustrations.setContext(getContext());
                     recyclerView.setAdapter(adapterYourWorksIllustrations);
                     submitWorkSegunRecycler =1;
 
-                }else if(numbut==2){
-
-                    FirebaseRecyclerOptions<MangaClass> options = new FirebaseRecyclerOptions.Builder<MangaClass>()
-                            .setQuery(FireBaseHelper.getUserMyWorksManga(), MangaClass.class).build();
-                    adapterYourWorksManga = new AdapterYourWorksManga(options);
-                    adapterYourWorksManga.setContext(getContext());
+                }else if(numbut==1){
                     recyclerView.setAdapter(adapterYourWorksManga);
                     submitWorkSegunRecycler =2;
                 }else{
 
-                    FirebaseRecyclerOptions<NovelClass> options = new FirebaseRecyclerOptions.Builder<NovelClass>()
-                            .setQuery(FireBaseHelper.getUserMyWorksNovels()
-                                    , NovelClass.class).build();
-                    adapterYourWorksNovels = new AdapterYourWorksNovels(options);
-                    adapterYourWorksNovels.setContext(getContext());
                     recyclerView.setAdapter(adapterYourWorksNovels);
                     submitWorkSegunRecycler =3;
                 }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
@@ -147,17 +158,11 @@ public class YourWorksFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        recyclerView.setAdapter(adapterYourWorksIllustrations);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         adapterYourWorksIllustrations.startListening();
-//        adapterYourWorksManga.startListening();
-//        adapterYourWorksNovels.startListening();
+        adapterYourWorksManga.startListening();
+        adapterYourWorksNovels.startListening();
 
     }
 
@@ -165,8 +170,8 @@ public class YourWorksFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapterYourWorksIllustrations.stopListening();
-//        adapterYourWorksManga.stopListening();
-//        adapterYourWorksNovels.stopListening();
+        adapterYourWorksManga.stopListening();
+        adapterYourWorksNovels.stopListening();
 
     }
 }

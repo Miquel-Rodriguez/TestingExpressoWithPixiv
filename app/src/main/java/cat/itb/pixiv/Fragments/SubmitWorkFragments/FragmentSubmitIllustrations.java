@@ -28,7 +28,7 @@ import java.io.File;
 
 import cat.itb.pixiv.ClassesModels.IllustrationClass;
 import cat.itb.pixiv.FireBase.FireBaseHelper;
-import cat.itb.pixiv.Fragments.HomeFragments.HomeFragment;
+import cat.itb.pixiv.Fragments.HomeFragment;
 import cat.itb.pixiv.R;
 
 public class FragmentSubmitIllustrations extends Fragment {

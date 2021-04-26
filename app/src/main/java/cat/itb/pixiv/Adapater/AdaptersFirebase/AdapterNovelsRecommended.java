@@ -1,6 +1,7 @@
 package cat.itb.pixiv.Adapater.AdaptersFirebase;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -16,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import cat.itb.pixiv.ClassesModels.ImatgesP;
 import cat.itb.pixiv.ClassesModels.NovelClass;
+import cat.itb.pixiv.Fragments.onClickImage.FragmentOCIllustrations;
+import cat.itb.pixiv.Fragments.onClickImage.FragmentOCNovels;
 import cat.itb.pixiv.R;
 
 public class AdapterNovelsRecommended extends FirebaseRecyclerAdapter<NovelClass, AdapterNovelsRecommended.ViewHolderNovelsRecommended> {
@@ -37,7 +41,7 @@ public class AdapterNovelsRecommended extends FirebaseRecyclerAdapter<NovelClass
     @Override
     protected void onBindViewHolder(@NonNull AdapterNovelsRecommended.ViewHolderNovelsRecommended holder, int position, @NonNull NovelClass model) {
         this.model = model;
-        holder.bind();
+        holder.bind(model);
     }
 
     @NonNull
@@ -62,7 +66,7 @@ public class AdapterNovelsRecommended extends FirebaseRecyclerAdapter<NovelClass
 
         }
 
-        public void bind(){
+        public void bind(final NovelClass novel){
             Picasso.with(getContext()).load(model.getNovelImgUrl()).into(imageViewimage);
             final boolean[] heart = {false};
             imageViewlike.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +81,21 @@ public class AdapterNovelsRecommended extends FirebaseRecyclerAdapter<NovelClass
 
             textViewTitle.setText(model.getTitle());
             textViewDescription.setText(model.getDescription());
-            textViewNumlikes.setText(model.getLikesNumber());
+            textViewNumlikes.setText(String.valueOf(model.getLikesNumber()));
+
+            imageViewimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(novel!=null){
+                        Bundle argument=new Bundle();
+                        argument.putParcelable("novelRecomended",novel);
+                        AppCompatActivity context=(AppCompatActivity)v.getContext();
+                        FragmentOCNovels fragmentnovels=new FragmentOCNovels();
+                        fragmentnovels.setArguments(argument);
+                        context.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragmentnovels).commit();
+                    }
+                }
+            });
         }
     }
 }

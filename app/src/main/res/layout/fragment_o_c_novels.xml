@@ -12,10 +12,12 @@
       >
 
 
+
       <RelativeLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/novels_oc_header">
+
           <de.hdodenhof.circleimageview.CircleImageView
               android:id="@+id/novel_oc_ProfileImage"
               android:layout_width="50dp"
@@ -33,6 +35,16 @@
               android:textSize="16sp"
               android:layout_toRightOf="@id/novel_oc_ProfileImage"
               android:layout_toEndOf="@id/novel_oc_ProfileImage" />
+
+          <com.google.android.material.button.MaterialButton
+              android:id="@+id/followButtonNovels"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Follow"
+              android:layout_marginLeft="150dp"
+              android:textColor="@color/colorPrimary"
+              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+              />
 
       </RelativeLayout>
 
@@ -88,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:iconGravity="textStart"
-                app:icon="@drawable/likeheartwhite"
+                app:icon="@drawable/close"
                 android:layout_weight="0.5"/>
 
 
