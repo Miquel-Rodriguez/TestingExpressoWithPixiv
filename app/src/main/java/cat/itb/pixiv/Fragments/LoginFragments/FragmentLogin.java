@@ -51,13 +51,13 @@ public class FragmentLogin extends Fragment {
         loginEditText = v.findViewById(R.id.input_text_login_username);
         passwordInput = v.findViewById(R.id.input_layout_login_password);
         passwordEditText = v.findViewById(R.id.input_text_login_password);
-        login = v.findViewById(R.id.loginButton);
+        login = v.findViewById(R.id.loginButtonn);
 
 
         if(getArguments()!=null && getArguments().getInt("id")==1){
             hacerlogout();
         }
-        cargarPreferences();
+//        cargarPreferences();
 
 
 
@@ -142,16 +142,16 @@ public class FragmentLogin extends Fragment {
         editor.commit();
     }
 
-    private void cargarPreferences(){
-        Context context = getContext();
-        SharedPreferences preferences  =  context.getSharedPreferences("credencials", Context.MODE_PRIVATE);
-
-        String user = preferences.getString("user","");
-        String password = preferences.getString("password","");
-
-        loginEditText.setText(user);
-        passwordEditText.setText(password);
-    }
+//    private void cargarPreferences(){
+//        Context context = getContext();
+//        SharedPreferences preferences  =  context.getSharedPreferences("credencials", Context.MODE_PRIVATE);
+//
+//        String user = preferences.getString("user","");
+//        String password = preferences.getString("password","");
+//
+//        loginEditText.setText(user);
+//        passwordEditText.setText(password);
+//    }
 
     public void hacerlogout(){
         Context context = getContext();

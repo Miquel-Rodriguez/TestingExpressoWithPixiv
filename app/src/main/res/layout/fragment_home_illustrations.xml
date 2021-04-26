@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.HomeFragments.FragmentHomeIllustrations"
     android:orientation="vertical"
-
+    android:id="@+id/homeIlustrationns"
     >
 
     <LinearLayout
